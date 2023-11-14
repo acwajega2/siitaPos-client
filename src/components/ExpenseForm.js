@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { useCustomContext } from "../context/Context";
 
 const ExpenseForm = () => {
   const { expenseData, setExpenseData, handleExpenseSubmit } =
     useCustomContext();
+
+  // Set the default date to today
+  useEffect(() => {
+    setExpenseData({ ...expenseData, expenseDate: new Date() });
+  }, []); // Run this effect only once when the component mounts
 
   return (
     <div className="form">
@@ -40,12 +47,12 @@ const ExpenseForm = () => {
         />
 
         <label>Expense Date</label>
-        <input
-          type="text"
-          value={expenseData.expenseDate}
-          onChange={(e) =>
-            setExpenseData({ ...expenseData, expenseDate: e.target.value })
+        <DatePicker
+          selected={expenseData.expenseDate}
+          onChange={(date) =>
+            setExpenseData({ ...expenseData, expenseDate: date })
           }
+          dateFormat="MM/dd/yyyy" // Adjust the date format as needed
         />
 
         <label>Expense Amount</label>

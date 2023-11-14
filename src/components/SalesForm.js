@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { useCustomContext } from "../context/Context";
 
 const SaleForm = () => {
   const { saleData, setSaleData, handleSaleSubmit } = useCustomContext();
+
+  // Set the default date to today
+  useEffect(() => {
+    setSaleData({ ...saleData, saleDate: new Date() });
+  }, []); // Run this effect only once when the component mounts
 
   return (
     <div className="form">
@@ -18,12 +25,10 @@ const SaleForm = () => {
         />
 
         <label>Sale Date</label>
-        <input
-          type="text"
-          value={saleData.saleDate}
-          onChange={(e) =>
-            setSaleData({ ...saleData, saleDate: e.target.value })
-          }
+        <DatePicker
+          selected={saleData.saleDate}
+          onChange={(date) => setSaleData({ ...saleData, saleDate: date })}
+          dateFormat="MM/dd/yyyy" // Adjust the date format as needed
         />
 
         <label>Branch Code</label>

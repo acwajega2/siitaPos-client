@@ -8,7 +8,7 @@ export default function App() {
   return (
     <ContextProvider>
       <div className="App">
-        <h1 className="app-title">Expense Tracker</h1>
+        <h1 className="app-title">Daily Transactions Tracker</h1>
         <Tabs defaultActiveKey="sale" id="expense-tracker-tabs">
           <Tab eventKey="sale" title="Daily Sale">
             <SaleForm />
