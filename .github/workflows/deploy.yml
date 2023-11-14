@@ -31,12 +31,13 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Upload files to cPanel
-        uses: sebastianpopp/ftp-action@releases/v2
+      - name: Upload files to Nginix webapp directory
+        if: success()
+        uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.EC2_HOST }}
           user: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_PRIVATE_KEY }}
-          remoteDir: "/home/ec2-user/apps/web-app"
-          localDir: "build"
-          options: "--delete --asci"
+          key:  ${{ secrets.EC2_PRIVATE_KEY }}
+          target: "/home/ec2-user/apps/web-app"
+          source: "build"
+  
