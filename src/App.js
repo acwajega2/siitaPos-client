@@ -1,11 +1,18 @@
 import "./styles.css";
+import SaleForm from "./components/SalesForm";
+import ExpenseForm from "./components/ExpenseForm";
+import { ContextProvider } from "./context/Context";
 
 export default function App() {
   return (
-    <div className="App">
-      <h1>Hello CodeSandbox</h1>
-
-      <h2>Start editineeeeeg to see some eeeeemagic happen!</h2>
-    </div>
+    <ContextProvider>
+      <div className="App">
+        <h1 className="app-title">Expense Tracker</h1>
+        <div className="form-container">
+          <SaleForm />
+          <ExpenseForm />
+        </div>
+      </div>
+    </ContextProvider>
   );
 }
