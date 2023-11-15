@@ -7,6 +7,13 @@ import React, {
 const Context = createContext();
 
 export const ContextProvider = ({ children }) => {
+  const [customAlertConfig, setCustomAlertConfig] = useState({
+    customAlertType: "",
+    customAlertMessage: "",
+    customAlertDescription: "",
+    displayCustomAlert: false,
+  });
+
   const [saleData, setSaleData] = useState({
     staffPhone: "",
     saleDate: "",
@@ -28,6 +35,15 @@ export const ContextProvider = ({ children }) => {
 
   const [error, setError] = useState(null);
 
+  const displayCustomAlert = ({ type, message, description, visible }) => {
+    setCustomAlertConfig({
+      customAlertType: type,
+      customAlertMessage: message,
+      customAlertDescription: description,
+      displayCustomAlert: visible,
+    });
+  };
+
   const handleSaleSubmit = async () => {
     try {
       validateSaleData();
@@ -44,9 +60,24 @@ export const ContextProvider = ({ children }) => {
 
       const result = await response.json();
       console.log("Sale posted successfully:", result);
+      displayCustomAlert({
+        type: "success",
+        message: "Sale Submission success",
+        description: result,
+        visible: true,
+      });
     } catch (error) {
       console.error("Error posting sale:", error.message);
+      displayCustomAlert({
+        type: "error",
+        message: "Sale Submission failure",
+        description: error.message,
+        visible: true,
+      });
       setError(error.message); // Set error state
+    } finally {
+      // Always clear errors in any case
+      clearError();
     }
   };
 
@@ -69,9 +100,24 @@ export const ContextProvider = ({ children }) => {
 
       const result = await response.json();
       console.log("Expense posted successfully:", result);
+      displayCustomAlert({
+        type: "success",
+        message: "Expense Submission success",
+        description: result,
+        visible: true,
+      });
     } catch (error) {
       console.error("Error posting expense:", error.message);
+      displayCustomAlert({
+        type: "error",
+        message: "Expense Submission failure",
+        description: error.message,
+        visible: true,
+      });
       setError(error.message); // Set error state
+    } finally {
+      // Always clear errors in any case
+      clearError();
     }
   };
 
@@ -87,6 +133,12 @@ export const ContextProvider = ({ children }) => {
 
     for (const field of requiredFields) {
       if (!saleData[field]) {
+        displayCustomAlert({
+          type: "error",
+          message: "Sale Submission failure",
+          description: `Please fill in all required fields for the daily sale. Missing: ${field}`,
+          displayCustomAlert: true,
+        });
         throw new Error(
           `Please fill in all required fields for the daily sale. Missing: ${field}`,
         );
@@ -94,6 +146,12 @@ export const ContextProvider = ({ children }) => {
     }
 
     if (saleData.saleAmount <= 0) {
+      displayCustomAlert({
+        type: "error",
+        message: "Sale Submission failure",
+        description: "Sale amount must be greater than zero.",
+        displayCustomAlert: true,
+      });
       throw new Error("Sale amount must be greater than zero.");
     }
   };
@@ -111,6 +169,12 @@ export const ContextProvider = ({ children }) => {
 
     for (const field of requiredFields) {
       if (!expenseData[field]) {
+        displayCustomAlert({
+          type: "error",
+          message: "Expense Submission failure",
+          description: `Please fill in all required fields for the daily expense. Missing: ${field}`,
+          displayCustomAlert: true,
+        });
         throw new Error(
           `Please fill in all required fields for the daily expense. Missing: ${field}`,
         );
@@ -118,8 +182,18 @@ export const ContextProvider = ({ children }) => {
     }
 
     if (expenseData.expenseAmount <= 0) {
+      displayCustomAlert({
+        type: "error",
+        message: "Expense Submission failure",
+        description: "Expense amount must be greater than zero.",
+        displayCustomAlert: true,
+      });
       throw new Error("Expense amount must be greater than zero.");
     }
+  };
+
+  const clearError = () => {
+    setError(null);
   };
 
   const contextValue = {
@@ -129,8 +203,10 @@ export const ContextProvider = ({ children }) => {
     setExpenseData,
     handleSaleSubmit,
     handleExpenseSubmit,
+    customAlertConfig,
+    setCustomAlertConfig,
     error, // Provide error state to components
-    clearError: () => setError(null), // Function to clear error
+    clearError, // Function to clear error
   };
 
   return <Context.Provider value={contextValue}>{children}</Context.Provider>;

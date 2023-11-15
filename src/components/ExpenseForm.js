@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useCustomContext } from "../context/Context";
+import { Input, Button } from "antd";
+import CustomAlert from "./CustomAlert";
 
 const ExpenseForm = () => {
   const { expenseData, setExpenseData, handleExpenseSubmit } =
@@ -15,9 +17,10 @@ const ExpenseForm = () => {
   return (
     <div className="form">
       <h2>Daily Expense Form</h2>
+      <CustomAlert />
       <form>
         <label>Transaction Reference</label>
-        <input
+        <Input
           type="text"
           value={expenseData.transactionReference}
           onChange={(e) =>
@@ -29,7 +32,7 @@ const ExpenseForm = () => {
         />
 
         <label>Branch Code</label>
-        <input
+        <Input
           type="text"
           value={expenseData.branchCode}
           onChange={(e) =>
@@ -38,7 +41,7 @@ const ExpenseForm = () => {
         />
 
         <label>Staff Phone</label>
-        <input
+        <Input
           type="text"
           value={expenseData.staffPhone}
           onChange={(e) =>
@@ -56,7 +59,7 @@ const ExpenseForm = () => {
         />
 
         <label>Expense Amount</label>
-        <input
+        <Input
           type="number"
           value={expenseData.expenseAmount}
           onChange={(e) =>
@@ -68,7 +71,7 @@ const ExpenseForm = () => {
         />
 
         <label>Expense Category</label>
-        <input
+        <Input
           type="text"
           value={expenseData.expenseCategory}
           onChange={(e) =>
@@ -77,7 +80,7 @@ const ExpenseForm = () => {
         />
 
         <label>Receipt Image URL</label>
-        <input
+        <Input
           type="text"
           value={expenseData.receiptImageUrl}
           onChange={(e) =>
@@ -85,9 +88,9 @@ const ExpenseForm = () => {
           }
         />
 
-        <button type="button" onClick={handleExpenseSubmit}>
+        <Button type="primary" onClick={handleExpenseSubmit}>
           Submit Expense
-        </button>
+        </Button>
       </form>
     </div>
   );

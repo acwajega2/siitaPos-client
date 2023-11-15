@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useCustomContext } from "../context/Context";
+import { Input, Button } from "antd";
+import CustomAlert from "./CustomAlert";
 
 const SaleForm = () => {
   const { saleData, setSaleData, handleSaleSubmit } = useCustomContext();
@@ -13,10 +15,12 @@ const SaleForm = () => {
 
   return (
     <div className="form">
+      <CustomAlert />
       <h2>Daily Sale Form</h2>
+
       <form>
         <label>Staff Phone</label>
-        <input
+        <Input
           type="text"
           value={saleData.staffPhone}
           onChange={(e) =>
@@ -32,7 +36,7 @@ const SaleForm = () => {
         />
 
         <label>Branch Code</label>
-        <input
+        <Input
           type="text"
           value={saleData.branchCode}
           onChange={(e) =>
@@ -41,7 +45,7 @@ const SaleForm = () => {
         />
 
         <label>Sale Amount</label>
-        <input
+        <Input
           type="number"
           value={saleData.saleAmount}
           onChange={(e) =>
@@ -50,7 +54,7 @@ const SaleForm = () => {
         />
 
         <label>Payment Method</label>
-        <input
+        <Input
           type="text"
           value={saleData.paymentMethod}
           onChange={(e) =>
@@ -59,7 +63,7 @@ const SaleForm = () => {
         />
 
         <label>Transaction Reference</label>
-        <input
+        <Input
           type="text"
           value={saleData.transactionReference}
           onChange={(e) =>
@@ -67,9 +71,9 @@ const SaleForm = () => {
           }
         />
 
-        <button type="button" onClick={handleSaleSubmit}>
+        <Button type="primary" onClick={handleSaleSubmit}>
           Submit Sale
-        </button>
+        </Button>
       </form>
     </div>
   );
